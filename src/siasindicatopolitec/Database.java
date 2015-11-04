@@ -38,21 +38,24 @@ public class Database {
         try {
             System.out.println("Connected to the DB SIASindicatoPolitec");
             db = DriverManager.getConnection(url+dbName,userName,password);
-            Statement query = (Statement) db.createStatement(); 
+            Statement query = (Statement) db.createStatement();
+            Statement stmt = db.createStatement();
+            String querySQL = "SELECT * FROM socio";
+            ResultSet rs = stmt.executeQuery(querySQL);
             //query.executeUpdate("INSERT INTO socio (rut, nombre, apellido, fenaci, cod_estado_civil_id, antiguedad) VALUES (19182515,'Francisco', 'Sanchez', 1995-06-02, 1, 2000-12-01)");
              
-            data = query.executeQuery("select * from socio");
-            printData(data);
+            //data = query.executeQuery("select * from socio");
+            //printData(data);
+            System.out.println(rs);
             
             db.close();
             System.out.println("closed connection");
         } catch (SQLException ex) {
             System.out.println("SQL Exception");
-            //Logger.getLogger(JavaCRUD.class.getName()).log(Level.SEVERE, null, ex);
         }
  
     }
- 
+    /*
     private static void printData(ResultSet data) throws SQLException
     {
         System.out.println("Now here are the names on the table");
@@ -83,5 +86,5 @@ public class Database {
             System.out.println("************************************");
             System.out.println("************************************");
         }
-    }
+    }*/
 }
