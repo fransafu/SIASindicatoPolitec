@@ -16,6 +16,11 @@ public class SIASindicatoPolitec {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        JFrameLogin f = new JFrameLogin();
+        f.setVisible(true);
+
+        //JFrameMain f = new JFrameMain();
+        //f.setVisible (true); 
     }
     
 }
