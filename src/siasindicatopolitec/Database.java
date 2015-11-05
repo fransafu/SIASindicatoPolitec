@@ -5,86 +5,50 @@
  */
 package siasindicatopolitec;
 
- 
 import java.sql.*;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author francisco
+ *  @author francisco
  */
 public class Database {
-   
-    private static ResultSet data = null;
-     
-    public static void main(String[] args) 
-    {
-        connection();
+    public static void main(String args[]) throws SQLException{
+        String sql = "SELECT * FROM estado_civil";
+        query(sql);
     }
- 
-    private static void connection()
-    {
-        Random random = new Random();
-         
-        System.out.println("MySQL conexion BD SIASindicatoPolitec.");
-        String url = "jdbc:mysql://fsanchez.cl/";
-        String dbName = "siasindicato";
-        String userName = "sindicato"; 
-        String password = "holasindicato";
-        Connection db = null;
-         
-        try {
-            System.out.println("Connected to the DB SIASindicatoPolitec");
-            db = DriverManager.getConnection(url+dbName,userName,password);
-            Statement query = (Statement) db.createStatement();
-            Statement stmt = db.createStatement();
-            String querySQL = "SELECT * FROM socio";
-            ResultSet rs = stmt.executeQuery(querySQL);
-            //query.executeUpdate("INSERT INTO socio (rut, nombre, apellido, fenaci, cod_estado_civil_id, antiguedad) VALUES (19182515,'Francisco', 'Sanchez', 1995-06-02, 1, 2000-12-01)");
-             
-            //data = query.executeQuery("select * from socio");
-            //printData(data);
-            System.out.println(rs);
-            
-            db.close();
-            System.out.println("closed connection");
-        } catch (SQLException ex) {
-            System.out.println("SQL Exception");
+
+    private static Statement conexion(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://fsanchez.cl/siasindicato","usuario_base_de_datos","password_base_de_datos");
+
+            Statement instruccion = conexion.createStatement();
+
+            return instruccion;
         }
- 
+        catch(ClassNotFoundException e){
+            System.out.println(e);
+            return null;
+        }
+        catch(SQLException e){
+            System.out.println(e);
+            return null;
+        }
+        catch(Exception e){
+            System.out.println(e);
+            return null;
+        }
     }
-    /*
-    private static void printData(ResultSet data) throws SQLException
-    {
-        System.out.println("Now here are the names on the table");
-        System.out.println("************************************");
-        System.out.println("************************************");
-        System.out.println("************************************");
-        System.out.println("************************************");
-         
-        while (data.next()) 
-        {
-            //int id = data.getInt("id");
-            
-            String rut = data.getString("rut");
-            String nombre = data.getString("nombre");
-            String apellido = data.getString("apellido");
-            String fenaci = data.getString("fenaci");
-            String cod_estado_civil_id = data.getString("cod_estado_civil_id");
-            String antiguedad = data.getString("antiguedad");
 
+    private static void query(String sql) throws SQLException{
+        Statement instruccion = conexion();
+        ResultSet tabla = instruccion.executeQuery(sql);
 
-            System.out.println("rut: " + rut);
-            System.out.println("nombre: " + nombre);
-            System.out.println("apellido: " + apellido);
-            System.out.println("fenaci: " + fenaci);
-            System.out.println("cod_estado_civil_id: " + cod_estado_civil_id);
-            System.out.println("antiguedad: " + antiguedad);
-            System.out.println("************************************");
-            System.out.println("************************************");
-            System.out.println("************************************");
+        System.out.println("Codigo \t estado");
+
+        while(tabla.next()){
+            System.out.println(tabla.getInt(1) + " " + tabla.getString(2));
         }
-    }*/
+    }
 }
