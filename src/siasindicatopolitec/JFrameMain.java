@@ -62,6 +62,11 @@ public class JFrameMain extends javax.swing.JFrame {
         });
 
         jButton5.setText("Gastos");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Salir");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -129,8 +134,12 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //this.setVisible(false);
+        //new JFrameSocio().setVisible(true); // Main Form to show after the Login Form..
+        //jFrame.setVisible(true);
         this.setVisible(false);
-        new JFrameSocio().setVisible(true); // Main Form to show after the Login Form..
+        JFrameSocio jFrame= new JFrameSocio();
+        jFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -143,6 +152,13 @@ public class JFrameMain extends javax.swing.JFrame {
         JFrameMulta jFrame= new JFrameMulta();
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        JFrameGastos jFrame= new JFrameGastos();
+        jFrame.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
