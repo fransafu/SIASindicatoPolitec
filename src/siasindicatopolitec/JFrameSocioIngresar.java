@@ -5,6 +5,16 @@
  */
 package siasindicatopolitec;
 
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import siasindicatopolitec.Database;
+
 /**
  *
  * @author daniel
@@ -14,8 +24,10 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     /**
      * Creates new form JFrameSocioIngresar
      */
-    public JFrameSocioIngresar() {
-        initComponents();
+    public JFrameSocioIngresar() throws SQLException {
+        initComponents(); // Carga en constructor del Frame
+        comboBoxEstadoCivil(); // Carga datos en el comboBox cuando inicia el Frame (Estado civil)
+        comboBoxSexo(); // Carga datos en el comboBox cuando inicia el Frame (Sexo)
     }
 
     /**
@@ -68,6 +80,11 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         jTextField1.setToolTipText("");
 
         jButton1.setText("IngresarSocio");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Limpiar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -82,10 +99,6 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Casado", "Soltero", "Viudo", "Separado" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Femenino" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,7 +190,6 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
@@ -186,11 +198,77 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         this.setVisible(false);
         JFrameSocio jFrame= new JFrameSocio();
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Statement instruccion = Database.conexion();
+        /*
+        String rut = jTextField1.getText();
+        String nombre = jTextField2.getText();
+        String apellido = jTextField3.getText();
+        String fenaci = jTextField4.getText();
+        String antiguedad = jTextField5.getText();       
+        
+        System.out.println(rut);
+        System.out.println(nombre);
+        System.out.println(apellido);
+        System.out.println(fenaci);
+        */
+        /*String sql = "";
+        try {
+            instruccion.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    // Funcion para estado civil
+    /*
+    comboBoxEstadoCivil: Esta funcion sirve para traer los campos de estado civil
+                         que se encuentran en la base de datos y los carga en el comboBox.
+
+    */
+    private void comboBoxEstadoCivil() throws SQLException{ 
+        Statement instruccion = Database.conexion();
+        String sql = "SELECT tipo FROM estado_civil";
+        ResultSet lista = instruccion.executeQuery(sql);
+        String varAux = "";
+
+        List<String> aux = new ArrayList<String>();
+
+        while(lista.next()){
+            varAux = lista.getString(1);
+            aux.add(varAux);
+        }
+
+        String[] data = new String[ aux.size() ];
+        aux.toArray( data );
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(data));
+    }
+
+    private void comboBoxSexo() throws SQLException{
+        Statement instruccion = Database.conexion();
+        String sql = "SELECT tipo FROM sexo";
+        ResultSet lista = instruccion.executeQuery(sql);
+        String varAux = "";
+
+        List<String> aux = new ArrayList<String>();
+
+        while(lista.next()){
+            varAux = lista.getString(1);
+            aux.add(varAux);
+        }
+
+        String[] data = new String[ aux.size() ];
+        aux.toArray( data );
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(data));
+    }
 
     /**
      * @param args the command line arguments
@@ -222,7 +300,11 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameSocioIngresar().setVisible(true);
+                try {
+                    new JFrameSocioIngresar().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -247,4 +329,8 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
+
+    private Date getDate(String jTextField2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

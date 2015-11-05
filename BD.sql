@@ -9,9 +9,11 @@ CREATE TABLE IF NOT EXISTS `socio` (
   	`apellido` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
   	`fenaci` DATE NOT NULL,
   	`cod_estado_civil_id` INT(11) NOT NULL,
+  	`sexo_id` INT(11) NOT NULL,
   	`antiguedad` DATE NOT NULL,
   	PRIMARY KEY (`rut`),
-  	KEY `cod_estado_civil_id` (`cod_estado_civil_id`)
+  	KEY `cod_estado_civil_id` (`cod_estado_civil_id`),
+  	KEY `sexo_id` (`sexo_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci ;
 
 CREATE TABLE IF NOT EXISTS `estado_civil` (
@@ -71,6 +73,12 @@ CREATE TABLE IF NOT EXISTS `certificado` (
 	KEY `cod_prestamo_id` (`cod_prestamo_id`)
 );
 
+CREATE TABLE IF NOT EXISTS `sexo` (
+	`cod_sexo` INT(11) NOT NULL,
+	`tipo` VARCHAR(20) NOT NULL,
+	PRIMARY KEY (`cod_sexo`)
+);
+
 
 ALTER TABLE `certificado`
   	ADD CONSTRAINT `certificado_prestamo` FOREIGN KEY (`cod_prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
@@ -89,4 +97,17 @@ ALTER TABLE `sindicato`
   	ADD CONSTRAINT `sindicato_socio` FOREIGN KEY (`rut_id`) REFERENCES `sindicato` (`cod_sindicato`);
 
 ALTER TABLE `socio`
-  	ADD CONSTRAINT `socio_estado_civil` FOREIGN KEY (`cod_estado_civil_id`) REFERENCES `estado_civil` (`cod_estado_civil`);
+  	ADD CONSTRAINT `socio_estado_civil` FOREIGN KEY (`cod_estado_civil_id`) REFERENCES `estado_civil` (`cod_estado_civil`),
+  	ADD CONSTRAINT `socio_sexo` FOREIGN KEY (`sexo_id`) REFERENCES `sexo` (`cod_sexo`);
+
+-- Datos basicos a ingresar:
+
+INSERT INTO `estado_civil` (`cod_estado_civil`, `tipo`) VALUES 
+(1, 'Casado'),
+(2, 'Soltero'),
+(3, 'Viudo'),
+(4, 'Separado');
+
+INSERT INTO `sexo` (`cod_sexo`, `tipo`) VALUES
+(1, 'Masculino'),
+(2, 'Femenino');

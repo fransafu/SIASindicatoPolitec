@@ -17,11 +17,11 @@ public class Database {
         query(sql);
     }
 
-    private static Statement conexion(){
+    public static Statement conexion(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
 
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://fsanchez.cl/siasindicato","usuario_base_de_datos","password_base_de_datos");
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://fsanchez.cl/siasindicato","sindicato","holasindicato");
 
             Statement instruccion = conexion.createStatement();
 
