@@ -11,10 +11,18 @@ CREATE TABLE IF NOT EXISTS `socio` (
   	`cod_estado_civil_id` INT(11) NOT NULL,
   	`sexo_id` INT(11) NOT NULL,
   	`antiguedad` DATE NOT NULL,
+  	`estado_id` INT(11) NOT NULL, 
   	PRIMARY KEY (`rut`),
+  	KEY `estado_id` (`estado_id`),
   	KEY `cod_estado_civil_id` (`cod_estado_civil_id`),
   	KEY `sexo_id` (`sexo_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci ;
+
+CREATE TABLE IF NOT EXISTS `estado` (
+	`cod_estado` INT(11) NOT NULL AUTO_INCREMENT,
+	`tipo` VARCHAR(10) NOT NULL,
+	PRIMARY KEY (`cod_estado`)
+) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `estado_civil` (
 	`cod_estado_civil` INT(11) NOT NULL,
@@ -98,6 +106,7 @@ ALTER TABLE `sindicato`
 
 ALTER TABLE `socio`
   	ADD CONSTRAINT `socio_estado_civil` FOREIGN KEY (`cod_estado_civil_id`) REFERENCES `estado_civil` (`cod_estado_civil`),
+  	ADD CONSTRAINT `socio_estado` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`cod_estado`),
   	ADD CONSTRAINT `socio_sexo` FOREIGN KEY (`sexo_id`) REFERENCES `sexo` (`cod_sexo`);
 
 -- Datos basicos a ingresar:
