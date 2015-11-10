@@ -13,8 +13,7 @@ import java.sql.*;
  */
 public class Database {
     public static void main(String args[]) throws SQLException{
-        String sql = "SELECT * FROM estado_civil";
-        query(sql);
+
     }
 
     public static Statement conexion(){
@@ -38,17 +37,6 @@ public class Database {
         catch(Exception e){
             System.out.println(e);
             return null;
-        }
-    }
-
-    private static void query(String sql) throws SQLException{
-        Statement instruccion = conexion();
-        ResultSet tabla = instruccion.executeQuery(sql);
-
-        System.out.println("Codigo \t estado");
-
-        while(tabla.next()){
-            System.out.println(tabla.getInt(1) + " " + tabla.getString(2));
         }
     }
 }

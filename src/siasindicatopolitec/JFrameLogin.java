@@ -144,8 +144,6 @@ public class JFrameLogin extends javax.swing.JFrame {
             // Definiendo variables
             String username = jTextField2.getText();
             String password = jTextField1.getText();
-            System.out.println(username);
-            System.out.println(password);
             // Realizando conexion con base de datos
             Statement instruccion = Database.conexion();
             String sql;
@@ -160,14 +158,9 @@ public class JFrameLogin extends javax.swing.JFrame {
             }
             
             if (contador == 1){
-                System.out.println("Ingresa");
-
                 JFrameMain jFrame = new JFrameMain();
                 jFrame.setVisible(true);
                 this.setVisible(false);
-            }
-            else{
-                System.out.println(contador);
             }
         } catch (SQLException ex) {
             Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
