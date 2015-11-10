@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import siasindicatopolitec.Database;
+import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author daniel
  */
 public class JFrameSocioIngresar extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form JFrameSocioIngresar
@@ -204,25 +206,24 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Statement instruccion = Database.conexion();
-        /*
+        try{
+        Statement instruccion = Database.conexion();
+        
         String rut = jTextField1.getText();
         String nombre = jTextField2.getText();
         String apellido = jTextField3.getText();
         String fenaci = jTextField4.getText();
-        String antiguedad = jTextField5.getText();       
+       // String antiguedad = jTextField5.getText();       
         
-        System.out.println(rut);
-        System.out.println(nombre);
-        System.out.println(apellido);
-        System.out.println(fenaci);
-        */
-        /*String sql = "";
-        try {
-            instruccion.executeQuery(sql);
+        
+        String sql;
+        sql = "INSERT INTO socio (rut,nombre,apellido,fenaci) VALUES (rut,nombre,apellido,fenaci)";
+        ResultSet lista = instruccion.executeQuery(sql);
+        //System.out.println(lista);
+        JOptionPane.showMessageDialog(null,"Datos Guardados");
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
