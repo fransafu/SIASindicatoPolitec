@@ -5,6 +5,12 @@
  */
 package siasindicatopolitec;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author francisco
@@ -57,8 +63,6 @@ public class JFrameLogin extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jTextField2.setEditable(false);
 
         javax.swing.GroupLayout Panel1Layout = new javax.swing.GroupLayout(Panel1);
         Panel1.setLayout(Panel1Layout);
@@ -135,7 +139,39 @@ public class JFrameLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Ingreso del usuario
+            // Definiendo variables
+            String username = jTextField2.getText();
+            String password = jTextField1.getText();
+            System.out.println(username);
+            System.out.println(password);
+            // Realizando conexion con base de datos
+            Statement instruccion = Database.conexion();
+            String sql;
+            sql = "SELECT username, password FROM usuario WHERE username = \'" + username + "\' AND password = \'" + password + "\'"; 
+            // Ejecutamos la consulta
+            ResultSet lista = instruccion.executeQuery(sql);
+            // Comprobamos que el usuario sea valido.
+            int contador = 0;
+            
+            while (lista.next()){
+                contador += 1;
+            }
+            
+            if (contador == 1){
+                System.out.println("Ingresa");
+
+                JFrameMain jFrame = new JFrameMain();
+                jFrame.setVisible(true);
+                this.setVisible(false);
+            }
+            else{
+                System.out.println(contador);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

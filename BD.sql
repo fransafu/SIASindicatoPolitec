@@ -39,12 +39,10 @@ CREATE TABLE IF NOT EXISTS `sindicato` (
 );
 
 CREATE TABLE IF NOT EXISTS `rol` (
-	`cod_rol` INT(11) NOT NULL,
+	`cod_rol` INT(11) NOT NULL AUTO_INCREMENT,
 	`nombre` VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL,
-	`rut_id` INT(11) NOT NULL,
-	PRIMARY KEY (`cod_rol`),
-	KEY `rut_id` (`rut_id`)
-);
+	PRIMARY KEY (`cod_rol`)
+) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `documentos` (
 	`cod_documento` INT(11) NOT NULL,
@@ -87,6 +85,17 @@ CREATE TABLE IF NOT EXISTS `sexo` (
 	PRIMARY KEY (`cod_sexo`)
 );
 
+CREATE TABLE IF NOT EXISTS `usuario` (
+	`cod_usuario` INT(11) NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(15) NOT NULL,
+	`password` VARCHAR(15) NOT NULL,
+	`nombre` VARCHAR(80) NOT NULL,
+	`apellido` VARCHAR(80) NOT NULL,
+	`rol_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_usuario`),
+	KEY `rol_id` (`rol_id`)
+) AUTO_INCREMENT = 1;
+
 
 ALTER TABLE `certificado`
   	ADD CONSTRAINT `certificado_prestamo` FOREIGN KEY (`cod_prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
@@ -98,8 +107,8 @@ ALTER TABLE `solicitud`
 ALTER TABLE `documentos`
   	ADD CONSTRAINT `documentos_sindicatos` FOREIGN KEY (`cod_sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`);
 
-ALTER TABLE `rol`
-  	ADD CONSTRAINT `rol_socio` FOREIGN KEY (`rut_id`) REFERENCES `rol` (`cod_rol`);
+ALTER TABLE `usuario`
+  	ADD CONSTRAINT `usuario_rol` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`cod_rol`);
 
 ALTER TABLE `sindicato`
   	ADD CONSTRAINT `sindicato_socio` FOREIGN KEY (`rut_id`) REFERENCES `sindicato` (`cod_sindicato`);
@@ -120,3 +129,21 @@ INSERT INTO `estado_civil` (`cod_estado_civil`, `tipo`) VALUES
 INSERT INTO `sexo` (`cod_sexo`, `tipo`) VALUES
 (1, 'Masculino'),
 (2, 'Femenino');
+
+INSERT INTO `estado` (tipo) VALUES
+('Activo'),
+('Inactivo');
+
+INSERT INTO `socio` (rut, nombre, apellido, fenaci, cod_estado_civil_id, sexo_id, antiguedad, estado_id) VALUES
+(19182515, 'Francisco Javier', 'Sánchez Fuentes', '1995-06-02', 1, 1, '2000-06-02', 1),
+(18603093, 'Daniel', 'Silva', '1993-08-25', 1, 1, '2000-08-25', 1);
+
+INSERT INTO `rol` (nombre) VALUES
+('Presidente'),
+('Tesorero'),
+('Secretario');
+
+INSERT INTO `usuario` (username, password, nombre, apellido, rol_id) VALUES
+('fransafu', 'password', 'Francisco', 'Sánchez', 3),
+('dsilva', 'password', 'Daniel', 'Silva', 2),
+('scott', 'password', 'Scott', 'Sánchez', 1);
