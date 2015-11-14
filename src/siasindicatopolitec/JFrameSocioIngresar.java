@@ -5,7 +5,9 @@
  */
 package siasindicatopolitec;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,10 +23,12 @@ import javax.swing.JOptionPane;
  * @author daniel
  */
 public class JFrameSocioIngresar extends javax.swing.JFrame {
-    
+    Database cn = new Database();
+    Connection con = Database.conexion1();
 
     /**
      * Creates new form JFrameSocioIngresar
+     * @throws java.sql.SQLException
      */
     public JFrameSocioIngresar() throws SQLException {
         initComponents(); // Carga en constructor del Frame
@@ -206,7 +210,7 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try{
+        /*try{
         Statement instruccion = Database.conexion();
         
         String rut = jTextField1.getText();
@@ -223,7 +227,25 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null,"Datos Guardados");
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
+        try {
+            PreparedStatement pps = con.prepareStatement("INSERT INTO socio (rut,nombre,apellido,fenaci) VALUES (?,?,?,?");
+            pps.setString(1, jTextField1.getText());
+            pps.setString(2, jTextField2.getText());
+            pps.setString(3, jTextField3.getText());
+            pps.setString(4, jTextField4.getText());
+            //pps.setString(5, jComboBox1.getSelectedItem().toString());
+            //pps.setString(6, jComboBox2.getSelectedItem().toString());
+            //pps.setString(7, jTextField5.getText());
+            int executeUpdate = pps.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Datos Ingresados");
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
+        
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
