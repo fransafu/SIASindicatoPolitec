@@ -13,8 +13,7 @@ import java.sql.*;
  */
 public class Database {
     public static void main(String args[]) throws SQLException{
-        String sql = "SELECT * FROM estado_civil";
-        query(sql);
+
     }
 
     public static Statement conexion(){
@@ -40,6 +39,7 @@ public class Database {
             return null;
         }
     }
+<<<<<<< HEAD
     public static Connection conexion1() throws SQLException{
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -66,4 +66,6 @@ public class Database {
             System.out.println(tabla.getInt(1) + " " + tabla.getString(2));
         }
     }
+=======
+>>>>>>> 80390864386dc556154e3c75a6ed42e127ffb796
 }
