@@ -5,9 +5,8 @@
  */
 package siasindicatopolitec;
 
-import java.sql.Connection;
+
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 
 /**
@@ -23,8 +21,7 @@ import javax.swing.JOptionPane;
  * @author daniel
  */
 public class JFrameSocioIngresar extends javax.swing.JFrame {
-    Database cn = new Database();
-    Connection con = Database.conexion1();
+    private Object DateTimeFormatter;
 
     /**
      * Creates new form JFrameSocioIngresar
@@ -210,43 +207,38 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*try{
-        Statement instruccion = Database.conexion();
-        
-        String rut = jTextField1.getText();
-        String nombre = jTextField2.getText();
-        String apellido = jTextField3.getText();
-        String fenaci = jTextField4.getText();
-       // String antiguedad = jTextField5.getText();       
-        
-        
-        String sql;
-        sql = "INSERT INTO socio (rut,nombre,apellido,fenaci) VALUES (rut,nombre,apellido,fenaci)";
-        ResultSet lista = instruccion.executeQuery(sql);
-        //System.out.println(lista);
-        JOptionPane.showMessageDialog(null,"Datos Guardados");
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        
         try {
-            PreparedStatement pps = con.prepareStatement("INSERT INTO socio (rut,nombre,apellido,fenaci) VALUES (?,?,?,?");
-            pps.setString(1, jTextField1.getText());
-            pps.setString(2, jTextField2.getText());
-            pps.setString(3, jTextField3.getText());
-            pps.setString(4, jTextField4.getText());
-            //pps.setString(5, jComboBox1.getSelectedItem().toString());
-            //pps.setString(6, jComboBox2.getSelectedItem().toString());
-            //pps.setString(7, jTextField5.getText());
-            int executeUpdate = pps.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Datos Ingresados");
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameSocioIngresar.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        
-        
+            Statement instruccion = Database.conexion();
 
+            String rut = jTextField1.getText();
+            String nombreGet = jTextField2.getText();
+            String apellido = jTextField3.getText();
+            String fenaci = jTextField4.getText();
+            String estado_civil = (String) jComboBox1.getSelectedItem();
+            String sexo = (String) jComboBox2.getSelectedItem();
+            String antiguedad =  jTextField5.getText();
+
+            String sql;
+            sql = "INSERT INTO socio (`rut`, `nombre`, `apellido`, `fenaci`, `cod_estado_civil_id`, `sexo_id`, `antiguedad`, `estado_id`) VALUES ("
+                + rut +
+                ",'"
+                + nombreGet +
+                "','"
+                + apellido +
+                "','"
+                + fenaci +
+                "', (SELECT `cod_estado_civil` FROM `estado_civil` WHERE tipo ='"
+                + estado_civil +
+                "'), (SELECT `cod_sexo` FROM `sexo` WHERE tipo ='"
+                + sexo +
+                "'),'"
+                + antiguedad +
+                "', 1);";
+            instruccion.executeUpdate(sql);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Funcion para estado civil
@@ -255,7 +247,7 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                          que se encuentran en la base de datos y los carga en el comboBox.
 
     */
-    private void comboBoxEstadoCivil() throws SQLException{ 
+    private void comboBoxEstadoCivil() throws SQLException{
         Statement instruccion = Database.conexion();
         String sql = "SELECT tipo FROM estado_civil";
         ResultSet lista = instruccion.executeQuery(sql);
@@ -300,7 +292,7 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -354,6 +346,10 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private Date getDate(String jTextField2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String quotate(String rut) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

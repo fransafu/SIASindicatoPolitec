@@ -39,7 +39,7 @@ public class Database {
             return null;
         }
     }
-<<<<<<< HEAD
+
     public static Connection conexion1() throws SQLException{
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -55,17 +55,4 @@ public class Database {
             return null;
         }
        }
-
-    private static void query(String sql) throws SQLException{
-        Statement instruccion = conexion();
-        ResultSet tabla = instruccion.executeQuery(sql);
-
-        System.out.println("Codigo \t estado");
-
-        while(tabla.next()){
-            System.out.println(tabla.getInt(1) + " " + tabla.getString(2));
-        }
-    }
-=======
->>>>>>> 80390864386dc556154e3c75a6ed42e127ffb796
 }
