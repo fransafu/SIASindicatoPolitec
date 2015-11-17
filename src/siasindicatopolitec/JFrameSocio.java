@@ -290,7 +290,6 @@ public class JFrameSocio extends javax.swing.JFrame {
             Statement instruccion = Database.conexion();
             String buscarRut;
             buscarRut = jTextField1.getText();
-            //String sql = "SELECT rut, nombre, apellido, fenaci, cod_estado_civil_id, sexo_id, antiguedad, estado_id FROM socio WHERE rut ="+buscarRut;
             String sql = "SELECT rut, nombre, apellido, fenaci, (SELECT tipo FROM estado_civil WHERE cod_estado_civil = cod_estado_civil_id) , (SELECT tipo FROM sexo WHERE cod_sexo = sexo_id), antiguedad, (SELECT tipo FROM estado WHERE cod_estado = estado_id) FROM socio WHERE rut = "+buscarRut;
             ResultSet lista = instruccion.executeQuery(sql);
             
