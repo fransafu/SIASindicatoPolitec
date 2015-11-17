@@ -38,21 +38,5 @@ public class Database {
             System.out.println(e);
             return null;
         }
-    }
-
-    public static Connection conexion1() throws SQLException{
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://fsanchez.cl/siasindicato","sindicato","holasindicato");
-
-            Statement instruccion = conexion.createStatement();
-
-            return conexion;
-        }
-        catch(ClassNotFoundException | SQLException e){
-            System.out.println(e);
-            return null;
-        }
-       }
+    }   
 }

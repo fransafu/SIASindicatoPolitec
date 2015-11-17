@@ -225,9 +225,49 @@ public class JFrameSocio extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        //Boton Actualizar
         JFrameSocioActualizar jFrame= new JFrameSocioActualizar();
         jFrame.setVisible(true);
         this.setVisible(false);
+        /*JFrameSocioActualizar.jTextField1.setText(jLabel2.getText());
+        JFrameSocioActualizar.jTextField2.setText(jLabel3.getText());
+        JFrameSocioActualizar.jTextField3.setText(jLabel1.getText());
+        JFrameSocioActualizar.jTextField4.setText(jLabel4.getText());*/
+        try {
+            Statement instruccion = Database.conexion();
+            String buscarRut;
+            buscarRut = jTextField1.getText();
+            String sql = "SELECT rut, nombre, apellido, fenaci, cod_estado_civil_id, sexo_id, antiguedad, estado_id "
+                    + "FROM socio WHERE rut ="+buscarRut;
+            ResultSet lista = instruccion.executeQuery(sql);
+            
+            while(lista.next()){
+                JFrameSocioActualizar.jTextField1.setText(lista.getString(1));
+            
+                JFrameSocioActualizar.jTextField2.setText(lista.getString(2));
+
+                JFrameSocioActualizar.jTextField3.setText(lista.getString(3));
+
+                JFrameSocioActualizar.jTextField4.setText(lista.getString(4));
+                
+                JFrameSocioActualizar.jTextField5.setText(lista.getString(7));
+                
+                JFrameSocioActualizar.jTextField6.setText(lista.getString(8));
+                
+                JFrameSocioActualizar.jComboBox1.setSelectedItem(lista.getString(5));
+                
+                JFrameSocioActualizar.jComboBox2.setSelectedItem(lista.getString(6));
+
+                              
+
+                
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
