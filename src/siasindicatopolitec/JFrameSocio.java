@@ -3,8 +3,6 @@ package siasindicatopolitec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -252,7 +250,8 @@ public class JFrameSocio extends javax.swing.JFrame {
             Statement instruccion = Database.conexion();
             String buscarRut;
             buscarRut = jTextField1.getText();
-            String sql = "SELECT rut, nombre, apellido, fenaci, cod_estado_civil_id, sexo_id, antiguedad, estado_id FROM socio WHERE rut ="+buscarRut;
+            //String sql = "SELECT rut, nombre, apellido, fenaci, cod_estado_civil_id, sexo_id, antiguedad, estado_id FROM socio WHERE rut ="+buscarRut;
+            String sql = "SELECT rut, nombre, apellido, fenaci, (SELECT tipo FROM estado_civil WHERE cod_estado_civil = cod_estado_civil_id) , (SELECT tipo FROM sexo WHERE cod_sexo = sexo_id), antiguedad, (SELECT tipo FROM estado WHERE cod_estado = estado_id) FROM socio WHERE rut = "+buscarRut;
             ResultSet lista = instruccion.executeQuery(sql);
             
             while(lista.next()){
