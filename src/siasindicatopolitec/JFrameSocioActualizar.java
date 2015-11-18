@@ -5,6 +5,11 @@
  */
 package siasindicatopolitec;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author daniel
@@ -68,6 +73,11 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         jLabel8.setText("Antiguedad : ");
 
         jButton1.setText("Actualizar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Volver");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -119,11 +129,11 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
                             .addComponent(jTextField6))))
                 .addContainerGap(175, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(158, 158, 158)
+                .addGap(130, 130, 130)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addGap(27, 27, 27))
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,15 +168,15 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(22, 22, 22))
         );
 
         pack();
@@ -178,6 +188,38 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         jFrame.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        //boton Actualizar
+        try {
+            Statement instruccion = Database.conexion();
+            String rut = jTextField1.getText();
+            String nombreGet = jTextField2.getText();
+            String apellido = jTextField3.getText();
+            String fenaci = jTextField4.getText();
+            String estado_civil = (String) jComboBox1.getSelectedItem();
+            String sexo = (String) jComboBox2.getSelectedItem();
+            String antiguedad =  jTextField5.getText();
+            String estado= jTextField6.getText();
+            
+            String sql;
+            sql =   "UPDATE socio SET" 
+                    +"rut ="+ rut + "','"
+                    +"nombre ="+ nombreGet +"','"
+                    +"apeliido = "+ apellido +"','"
+                    +"fenaci = "+ fenaci +"','"
+                    +"cod_estado_civil_id = "+ estado_civil+"','"                
+                    +"sexo_id = "+ sexo + "','"
+                    +"antiguedad = "+ antiguedad + "','"
+                    +"estado_id = "+ estado + "','" 
+                    +"WHERE rut = "+ rut +"';'"; 
+            instruccion.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
