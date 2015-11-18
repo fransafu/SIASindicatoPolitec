@@ -62,6 +62,7 @@ public class JFrameSocio extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jButton1.setText("Ingresar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +167,7 @@ public class JFrameSocio extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton6))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,7 +195,7 @@ public class JFrameSocio extends javax.swing.JFrame {
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton6))
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -203,6 +204,7 @@ public class JFrameSocio extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        // Boton ingresar
         JFrameSocioIngresar jFrame = null;
         try {
             jFrame = new JFrameSocioIngresar();
@@ -213,65 +215,44 @@ public class JFrameSocio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
+        // Boton volver
         JFrameMain jFrame= new JFrameMain();
         jFrame.setVisible(true);
         this.setVisible(false);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         //Boton Actualizar
         JFrameSocioActualizar jFrame= new JFrameSocioActualizar();
         jFrame.setVisible(true);
         this.setVisible(false);
-        /*JFrameSocioActualizar.jTextField1.setText(jLabel2.getText());
-        JFrameSocioActualizar.jTextField2.setText(jLabel3.getText());
-        JFrameSocioActualizar.jTextField3.setText(jLabel1.getText());
-        JFrameSocioActualizar.jTextField4.setText(jLabel4.getText());*/
+
         try {
             Statement instruccion = Database.conexion();
             String buscarRut;
             buscarRut = jTextField1.getText();
-            String sql = "SELECT rut, nombre, apellido, fenaci, cod_estado_civil_id, sexo_id, antiguedad, estado_id "
-                    + "FROM socio WHERE rut ="+buscarRut;
+            String sql = "SELECT rut, nombre, apellido, fenaci, (SELECT tipo FROM estado_civil WHERE cod_estado_civil = cod_estado_civil_id) , (SELECT tipo FROM sexo WHERE cod_sexo = sexo_id), antiguedad, (SELECT tipo FROM estado WHERE cod_estado = estado_id) FROM socio WHERE rut = "+buscarRut;
             ResultSet lista = instruccion.executeQuery(sql);
             
             while(lista.next()){
                 JFrameSocioActualizar.jTextField1.setText(lista.getString(1));
-            
                 JFrameSocioActualizar.jTextField2.setText(lista.getString(2));
-
                 JFrameSocioActualizar.jTextField3.setText(lista.getString(3));
-
                 JFrameSocioActualizar.jTextField4.setText(lista.getString(4));
-                
                 JFrameSocioActualizar.jTextField5.setText(lista.getString(7));
-                
                 JFrameSocioActualizar.jTextField6.setText(lista.getString(8));
-                
                 JFrameSocioActualizar.jComboBox1.setSelectedItem(lista.getString(5));
-                
                 JFrameSocioActualizar.jComboBox2.setSelectedItem(lista.getString(6));
-
-                              
-
-                
-            }
-            
-            
+            }            
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        
-    }//GEN-LAST:event_jButton4ActionPerformed
+        }   
+    }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt){
+        //boton borrar
         try {
-            //boton borrar
             Statement instruccion = Database.conexion();
             String buscarRut;
             buscarRut = jTextField1.getText();
@@ -283,9 +264,10 @@ public class JFrameSocio extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Buscar socio
         try {
             Statement instruccion = Database.conexion();
             String buscarRut;
@@ -295,37 +277,23 @@ public class JFrameSocio extends javax.swing.JFrame {
             
             while(lista.next()){
                 jLabel2.setText("Rut: " + lista.getString(1));
-            
                 jLabel3.setText("Nombre: " +lista.getString(2));
-
                 jLabel1.setText("Apellido: " + lista.getString(3));
-
                 jLabel4.setText("Fecha de nacimiento: " + lista.getString(4));
-
                 jLabel5.setText("Estado civil: " + lista.getString(5));
-                
                 jLabel7.setText("Sexo: " + lista.getString(6));
-
                 jLabel6.setText("Antiguedad: " + lista.getString(7));
-
                 jLabel8.setText("Estado: " + lista.getString(8));
             }
-            
-            
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -342,9 +310,7 @@ public class JFrameSocio extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(JFrameSocio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new JFrameSocio().setVisible(true);

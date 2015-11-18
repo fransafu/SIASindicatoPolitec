@@ -96,6 +96,26 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 	KEY `rol_id` (`rol_id`)
 ) AUTO_INCREMENT = 1;
 
+CREATE TABLE IF NOT EXISTS `multa`(
+	`cod_multa` INT(11) NOT NULL AUTO_INCREMENT,
+	`rut_id` INT(11) NOT NULL,
+	`motivo_id` INT(11) NOT NULL,
+	`fecha` DATE NOT NULL,
+	`cant_multa` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_multa`),
+	KEY `rut_id` (`rut_id`),
+	KEY `motivo_id` (`motivo_id`)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `motivo`(
+	`cod_motivo` INT(11) NOT NULL AUTO_INCREMENT,
+	`tipo` VARCHAR(50) NOT NULL,
+	PRIMARY KEY(`cod_motivo`)
+)AUTO_INCREMENT = 1;
+
+ALTER TABLE `multa`
+  	ADD CONSTRAINT `multa_socio` FOREIGN KEY (`rut_id`) REFERENCES `socio` (`rut`),
+  	ADD CONSTRAINT `multa_motivo` FOREIGN KEY (`motivo_id`) REFERENCES `motivo` (`cod_motivo`);
 
 ALTER TABLE `certificado`
   	ADD CONSTRAINT `certificado_prestamo` FOREIGN KEY (`cod_prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
@@ -119,6 +139,10 @@ ALTER TABLE `socio`
   	ADD CONSTRAINT `socio_sexo` FOREIGN KEY (`sexo_id`) REFERENCES `sexo` (`cod_sexo`);
 
 -- Datos basicos a ingresar:
+
+INSERT INTO `motivo` (`tipo`) VALUES
+('Mal comportamiento'),
+('Falta reunion');
 
 INSERT INTO `estado_civil` (`cod_estado_civil`, `tipo`) VALUES 
 (1, 'Casado'),
