@@ -5,6 +5,15 @@
  */
 package siasindicatopolitec;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+
 /**
  *
  * @author francisco
@@ -56,6 +65,11 @@ public class JFramePrestamo extends javax.swing.JFrame {
         });
 
         jButton1.setText("Solicitar ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Limpiar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +164,47 @@ public class JFramePrestamo extends javax.swing.JFrame {
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Statement instruccion = Database.conexion();
+
+            String rut = jTextField1.getText();
+            String monto = jTextField2.getText();
+            String nro_cuotas = jTextField3.getText();
+            //String motivo = (String) jComboBox1.getSelectedItem();
+            String fecha = FechaActual();             
+
+            String sql;
+            sql = "INSERT INTO prestamo (`cantidad`, `nro_cuotas`) VALUES ("
+                + monto +
+               ",'"
+                + nro_cuotas +
+                "');";
+            
+            sql = "INSERT INTO solicitud (`fecha`,`rut_id`,`cod_prestamo_id`) VALUES ("
+                    +fecha+
+                    ",'"
+                    +rut+ 
+                    ",(SELECT `a.cod_prestamo` FROM `prestamo`a INNER JOIN `solicitud` b ON a.cod_prestamo = b.cod_prestamo_id ')";
+                    
+            
+            //instruccion.executeUpdate(sql1);   
+            instruccion.executeUpdate(sql);           
+            JOptionPane.showMessageDialog(null, "Prestamo Solicitado ");
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public static String FechaActual(){
+        Date fecha = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("YYYY-MM-dd");
+        
+        return formato.format(fecha);
+        
+    }
     /**
      * @param args the command line arguments
      */
