@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -235,6 +236,7 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                 + antiguedad +
                 "', 1);";
             instruccion.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Socio Ingresado Correctamente");
 
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);

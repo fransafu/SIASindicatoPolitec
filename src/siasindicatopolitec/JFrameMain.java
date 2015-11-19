@@ -1,5 +1,9 @@
 package siasindicatopolitec;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -60,7 +64,12 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Presupuesto");
+        jButton2.setText("Préstamos");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Multa");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +173,12 @@ public class JFrameMain extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        JFrameMulta jFrame= new JFrameMulta();
+        JFrameMulta jFrame = null;
+        try {
+            jFrame = new JFrameMulta();
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -174,6 +188,13 @@ public class JFrameMain extends javax.swing.JFrame {
         JFrameGastos jFrame= new JFrameGastos();
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        JFramePrestamo jFrame= new JFramePrestamo();
+        jFrame.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

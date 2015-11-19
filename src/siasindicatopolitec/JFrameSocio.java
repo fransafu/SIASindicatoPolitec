@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -266,7 +267,7 @@ public class JFrameSocio extends javax.swing.JFrame {
             String sql;
             sql = "UPDATE socio SET estado_id = 2 WHERE rut = " + buscarRut;
             instruccion.executeUpdate(sql);
-            
+            JOptionPane.showMessageDialog(null, "Socio Borrado ");
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
