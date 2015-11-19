@@ -222,9 +222,14 @@ public class JFrameSocio extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt){
         //Boton Actualizar
-        JFrameSocioActualizar jFrame= new JFrameSocioActualizar();
+        JFrameSocioActualizar jFrame = null;
+        try {
+            jFrame = new JFrameSocioActualizar();
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         jFrame.setVisible(true);
         this.setVisible(false);
 
@@ -242,9 +247,9 @@ public class JFrameSocio extends javax.swing.JFrame {
                 JFrameSocioActualizar.jTextField3.setText(lista.getString(3));
                 JFrameSocioActualizar.jTextField4.setText(lista.getString(4));
                 JFrameSocioActualizar.jTextField5.setText(lista.getString(7));
-                JFrameSocioActualizar.jTextField6.setText(lista.getString(8));
                 JFrameSocioActualizar.jComboBox1.setSelectedItem(lista.getString(5));
                 JFrameSocioActualizar.jComboBox2.setSelectedItem(lista.getString(6));
+                JFrameSocioActualizar.jComboBox3.setSelectedItem(lista.getString(8));
             }            
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);

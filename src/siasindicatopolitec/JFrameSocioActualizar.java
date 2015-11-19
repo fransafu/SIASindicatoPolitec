@@ -5,8 +5,11 @@
  */
 package siasindicatopolitec;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +22,11 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
     /**
      * Creates new form JFrameSocioActualizar
      */
-    public JFrameSocioActualizar() {
+    public JFrameSocioActualizar() throws SQLException {
         initComponents();
+        comboBoxEstadoCivil(); // Carga datos en el comboBox cuando inicia el Frame (Estado civil)
+        comboBoxSexo(); // Carga datos en el comboBox cuando inicia el Frame (Sexo)
+        comboBoxEstado(); // Carga datos en el comboBox cuando inicia el Frame (Estado)
     }
 
     /**
@@ -50,7 +56,7 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jComboBox3 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,10 +99,11 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(jLabel1))
+                .addGap(178, 178, 178)
+                .addComponent(jLabel1)
+                .addContainerGap(175, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,13 +133,13 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
                             .addComponent(jTextField5)
                             .addComponent(jComboBox1, 0, 125, Short.MAX_VALUE)
                             .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField6))))
-                .addContainerGap(175, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
                 .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
@@ -168,11 +175,11 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -183,14 +190,14 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+
         JFrameSocio jFrame= new JFrameSocio();
         jFrame.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+
         //boton Actualizar
         try {
             Statement instruccion = Database.conexion();
@@ -201,26 +208,74 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
             String estado_civil = (String) jComboBox1.getSelectedItem();
             String sexo = (String) jComboBox2.getSelectedItem();
             String antiguedad =  jTextField5.getText();
-            String estado= jTextField6.getText();
-            
+            String estado = (String) jComboBox3.getSelectedItem();
+
             String sql;
-            sql =   "UPDATE socio SET" 
-                    +"rut ="+ rut + "','"
-                    +"nombre ="+ nombreGet +"','"
-                    +"apeliido = "+ apellido +"','"
-                    +"fenaci = "+ fenaci +"','"
-                    +"cod_estado_civil_id = "+ estado_civil+"','"                
-                    +"sexo_id = "+ sexo + "','"
-                    +"antiguedad = "+ antiguedad + "','"
-                    +"estado_id = "+ estado + "','" 
-                    +"WHERE rut = "+ rut +"';'"; 
+            sql = "UPDATE `socio` SET `rut`=" + rut + ",`nombre`='" + nombreGet + "',`apellido`='" + apellido + "',`fenaci`='" + fenaci + "',`cod_estado_civil_id`= (SELECT cod_estado_civil FROM estado_civil where tipo ='" + estado_civil + "'),`sexo_id`= (SELECT cod_sexo FROM sexo WHERE tipo ='" + sexo + "'),`antiguedad`='" + antiguedad + "',`estado_id`=(SELECT cod_estado FROM estado WHERE tipo ='" + estado + "') WHERE rut =" + rut; 
             instruccion.executeUpdate(sql);
             
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void comboBoxEstadoCivil() throws SQLException{
+        Statement instruccion = Database.conexion();
+        String sql = "SELECT tipo FROM estado_civil";
+        ResultSet lista = instruccion.executeQuery(sql);
+        String varAux = "";
 
+        List<String> aux = new ArrayList<String>();
+
+        while(lista.next()){
+            varAux = lista.getString(1);
+            aux.add(varAux);
+        }
+
+        String[] data = new String[ aux.size() ];
+        aux.toArray( data );
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(data));
+    }
+    
+    private void comboBoxSexo() throws SQLException{
+        Statement instruccion = Database.conexion();
+        String sql = "SELECT tipo FROM sexo";
+        ResultSet lista = instruccion.executeQuery(sql);
+        String varAux = "";
+
+        List<String> aux = new ArrayList<String>();
+
+        while(lista.next()){
+            varAux = lista.getString(1);
+            aux.add(varAux);
+        }
+
+        String[] data = new String[ aux.size() ];
+        aux.toArray( data );
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(data));
+    }
+    
+    private void comboBoxEstado() throws SQLException{
+        Statement instruccion = Database.conexion();
+        String sql = "SELECT tipo FROM estado";
+        ResultSet lista = instruccion.executeQuery(sql);
+        String varAux = "";
+
+        List<String> aux = new ArrayList<String>();
+
+        while(lista.next()){
+            varAux = lista.getString(1);
+            aux.add(varAux);
+        }
+
+        String[] data = new String[ aux.size() ];
+        aux.toArray( data );
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(data));
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -251,7 +306,11 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameSocioActualizar().setVisible(true);
+                try {
+                    new JFrameSocioActualizar().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(JFrameSocioActualizar.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -261,6 +320,7 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     public static javax.swing.JComboBox jComboBox1;
     public static javax.swing.JComboBox jComboBox2;
+    public static javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -275,6 +335,5 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
     public static javax.swing.JTextField jTextField3;
     public static javax.swing.JTextField jTextField4;
     public static javax.swing.JTextField jTextField5;
-    public static javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }
