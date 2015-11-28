@@ -198,14 +198,15 @@ public class JFrameMulta extends javax.swing.JFrame {
             String fecha = FechaActual();             
 
             String sql;
-            sql = "INSERT INTO multa (`rut_id`, `motivo_id`,`fecha`, `cant_multa`) VALUES ("
-                + rut +
-               ", (SELECT `cod_motivo` FROM `motivo` WHERE tipo ='"
+            sql = "INSERT INTO multa (`motivo_id`,`cant_multa`) VALUES ("
+                +", (SELECT `cod_motivo` FROM `motivo` WHERE tipo ='"
                 + motivo +
                 "'), '"
-                + fecha +
-                "','"
-                + numero_multa +"');";
+                + numero_multa + "');";
+            sql = "INSERT INTO socio_multa (`rut`,`multa_id`,`fecha`) VALUES ("
+                    +rut+ 
+                    ",(SELECT MAX(`cod_multa`) FROM `multa` ),'"
+                    +fecha+ ");";
                 
             instruccion.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "Multa Registrada ");
