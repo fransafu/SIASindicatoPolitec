@@ -33,10 +33,83 @@ CREATE TABLE IF NOT EXISTS `estado_civil` (
 CREATE TABLE IF NOT EXISTS `sindicato` (
 	`cod_sindicato` INT(11) NOT NULL AUTO_INCREMENT,
 	`direccion` VARCHAR(250) COLLATE utf8_spanish_ci NOT NULL,
-	`rut_id` INT(11) NOT NULL,
-	PRIMARY KEY (`cod_sindicato`),
-	KEY `rut_id` (`rut_id`)
+	PRIMARY KEY (`cod_sindicato`)
 );
+
+CREATE TABLE IF NOT EXISTS `sindicato_carta` (
+	`cod_sindicato_carta` INT(11) NOT NULL AUTO_INCREMENT,
+	`sindicato_id` INT(11) NOT NULL,
+	`carta_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_sindicato_carta`),
+	KEY `sindicato_id` (`sindicato_id`),
+	KEY `carta_id` (`carta_id`)
+) AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `carta` (
+	`cod_carta` INT(11) NOT NULL AUTO_INCREMENT,
+	`fecha` DATE NOT NULL,
+	`tipo_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_carta`),
+	KEY `tipo_id` (`tipo_id`)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `carta_tipo` (
+	`cod_carta_tipo` INT(11) NOT NULL AUTO_INCREMENT,
+	`tipo` VARCHAR(50) NOT NULL,
+	`mensaje` TEXT NULL,
+	PRIMARY KEY (`cod_carta_tipo`)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `registro_presupuesto` (
+	`cod_registro_presupuesto` INT(11) NOT NULL AUTO_INCREMENT,
+	`fecha` DATE NOT NULL,
+	`sindicato_id` INT(11) NOT NULL,
+	`presupuesto_mensual_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_registro_presupuesto`),
+	KEY `sindicato_id` (`sindicato_id`),
+	KEY `presupuesto_mensual_id` (`presupuesto_mensual_id`)
+)AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `presupuesto_mensual` (
+	`cod_presupuesto_mensual` INT(11) NOT NULL AUTO_INCREMENT,
+	`total_gastos` FLOAT NOT NULL,
+	`total_ingresos` FLOAT NOT NULL,
+	`ingresos_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_presupuesto_mensual`),
+	KEY `ingresos_id` (`ingresos_id`)
+)AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `presupuesto_mensual_egreso` (
+	`cod_presupuesto_mensual_egreso` INT(11) NOT NULL AUTO_INCREMENT,
+	`fecha` DATE NOT NULL,
+	`presupuesto_mensual_id` INT(11) NOT NULL,
+	`egreso_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_presupuesto_mensual_egreso`),
+	KEY `presupuesto_mensual_id` (`presupuesto_mensual_id`),
+	KEY `egreso_id` (`egreso_id`)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `ingreso` (
+	`cod_ingreso` INT(11) NOT NULL AUTO_INCREMENT,
+	`saldo_anterior` FLOAT NOT NULL,
+	`cuota_sindical` FLOAT NOT NULL,
+	`cuota_75_percent` FLOAT NOT NULL,
+	PRIMARY KEY (`cod_ingreso`)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `egreso` (
+	`cod_egreso` INT(11) NOT NULL AUTO_INCREMENT,
+	`descripcion` VARCHAR(300) NOT NULL,
+	`monto` FLOAT NOT NULL,
+	PRIMARY KEY (`cod_egreso`)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `informe` (
+	`cod_informe` INT(11) NOT NULL AUTO_INCREMENT,
+	`presupuesto_mensual_id` INT(11) NOT NULL,
+	PRIMARY KEY (`cod_informe`),
+	KEY `presupuesto_mensual_id` (`presupuesto_mensual_id`)
+) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `rol` (
 	`cod_rol` INT(11) NOT NULL AUTO_INCREMENT,
@@ -45,24 +118,14 @@ CREATE TABLE IF NOT EXISTS `rol` (
 ) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `documentos` (
-	`cod_documento` INT(11) NOT NULL,
+	`cod_documento` INT(11) NOT NULL AUTO_INCREMENT,
 	`nombre` VARCHAR(30) COLLATE utf8_spanish_ci NOT NULL,
 	`tipo` VARCHAR(30) COLLATE utf8_spanish_ci NOT NULL,
 	`fecha` DATE NOT NULL,
-	`cod_sindicato_id` INT(11) NOT NULL,
+	`sindicato_id` INT(11) NOT NULL,
 	PRIMARY KEY (`cod_documento`),
-	KEY `cod_sindicato_id` (`cod_sindicato_id`)
-);
-
-CREATE TABLE IF NOT EXISTS `solicitud` (
-	`cod_solicitud` INT(11) NOT NULL,
-	`fecha` DATE NOT NULL,
-	`rut_id` INT(11) NOT NULL,
-	`cod_prestamo_id` INT (11) NOT NULL,
-	PRIMARY KEY (`cod_solicitud`),
-	KEY `rut_id` (`rut_id`),
-	KEY `cod_prestamo_id` (`cod_prestamo_id`)
-);
+	KEY `sindicato_id` (`sindicato_id`)
+) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `prestamo` (
 	`cod_prestamo` INT (11) NOT NULL,
@@ -71,12 +134,22 @@ CREATE TABLE IF NOT EXISTS `prestamo` (
 	PRIMARY KEY (`cod_prestamo`)
 );
 
+CREATE TABLE IF NOT EXISTS `solicitud` (
+	`cod_solicitud` INT(11) NOT NULL AUTO_INCREMENT,
+	`fecha` DATE NOT NULL,
+	`rut_id` INT(11) NOT NULL,
+	`prestamo_id` INT (11) NOT NULL,
+	PRIMARY KEY (`cod_solicitud`),
+	KEY `rut_id` (`rut_id`),
+	KEY `prestamo_id` (`prestamo_id`)
+)AUTO_INCREMENT = 1;
+
 CREATE TABLE IF NOT EXISTS `certificado` (
 	`nro_certificado` INT(11) NOT NULL,
 	`nombre` VARCHAR(100) NOT NULL,
-	`cod_prestamo_id` INT(11) NOT NULL,
+	`prestamo_id` INT(11) NOT NULL,
 	PRIMARY KEY (`nro_certificado`),
-	KEY `cod_prestamo_id` (`cod_prestamo_id`)
+	KEY `prestamo_id` (`prestamo_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `sexo` (
@@ -92,18 +165,27 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 	`nombre` VARCHAR(80) NOT NULL,
 	`apellido` VARCHAR(80) NOT NULL,
 	`rol_id` INT(11) NOT NULL,
+	`sindicato_id` INT(11) NOT NULL,
 	PRIMARY KEY (`cod_usuario`),
-	KEY `rol_id` (`rol_id`)
+	KEY `rol_id` (`rol_id`),
+	KEY `sindicato_id` (`sindicato_id`)
 ) AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `socio_multa`(
+	`cod_socio_multa` INT(11) NOT NULL AUTO_INCREMENT,
+	`rut_id` INT(11) NOT NULL,
+	`multa_id` INT(11) NOT NULL,
+	`fecha` DATE,
+	PRIMARY KEY (`cod_socio_multa`),
+	KEY `rut_id` (`rut_id`),
+	KEY `multa_id` (`multa_id`)
+) AUTO_INCREMENT = 1; 
 
 CREATE TABLE IF NOT EXISTS `multa`(
 	`cod_multa` INT(11) NOT NULL AUTO_INCREMENT,
-	`rut_id` INT(11) NOT NULL,
 	`motivo_id` INT(11) NOT NULL,
-	`fecha` DATE NOT NULL,
 	`cant_multa` INT(11) NOT NULL,
 	PRIMARY KEY (`cod_multa`),
-	KEY `rut_id` (`rut_id`),
 	KEY `motivo_id` (`motivo_id`)
 ) AUTO_INCREMENT = 1;
 
@@ -113,32 +195,63 @@ CREATE TABLE IF NOT EXISTS `motivo`(
 	PRIMARY KEY(`cod_motivo`)
 )AUTO_INCREMENT = 1;
 
-ALTER TABLE `multa`
-  	ADD CONSTRAINT `multa_socio` FOREIGN KEY (`rut_id`) REFERENCES `socio` (`rut`),
-  	ADD CONSTRAINT `multa_motivo` FOREIGN KEY (`motivo_id`) REFERENCES `motivo` (`cod_motivo`);
+
+
+
+
 
 ALTER TABLE `certificado`
-  	ADD CONSTRAINT `certificado_prestamo` FOREIGN KEY (`cod_prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
+  	ADD CONSTRAINT `certificado_prestamo` FOREIGN KEY (`prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
 
 ALTER TABLE `solicitud`
   	ADD CONSTRAINT `solicitud_socio` FOREIGN KEY (`rut_id`) REFERENCES `socio` (`rut`),
-  	ADD CONSTRAINT `solicitud_prestamo` FOREIGN KEY (`cod_prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
+  	ADD CONSTRAINT `solicitud_prestamo` FOREIGN KEY (`prestamo_id`) REFERENCES `prestamo` (`cod_prestamo`);
 
 ALTER TABLE `documentos`
-  	ADD CONSTRAINT `documentos_sindicatos` FOREIGN KEY (`cod_sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`);
+  	ADD CONSTRAINT `documentos_sindicatos` FOREIGN KEY (`sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`);
 
 ALTER TABLE `usuario`
+	ADD CONSTRAINT `usuario_sindicato` FOREIGN KEY (`sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`),
   	ADD CONSTRAINT `usuario_rol` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`cod_rol`);
-
-ALTER TABLE `sindicato`
-  	ADD CONSTRAINT `sindicato_socio` FOREIGN KEY (`rut_id`) REFERENCES `sindicato` (`cod_sindicato`);
 
 ALTER TABLE `socio`
   	ADD CONSTRAINT `socio_estado_civil` FOREIGN KEY (`cod_estado_civil_id`) REFERENCES `estado_civil` (`cod_estado_civil`),
   	ADD CONSTRAINT `socio_estado` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`cod_estado`),
   	ADD CONSTRAINT `socio_sexo` FOREIGN KEY (`sexo_id`) REFERENCES `sexo` (`cod_sexo`);
 
+ALTER TABLE `multa`
+  	ADD CONSTRAINT `multa_motivo` FOREIGN KEY (`motivo_id`) REFERENCES `motivo` (`cod_motivo`);
+
+ALTER TABLE `socio_multa`
+	ADD CONSTRAINT `socio_multa_multa` FOREIGN KEY (`multa_id`) REFERENCES `multa` (`cod_multa`),
+	ADD CONSTRAINT `socio_multa_socio` FOREIGN KEY (`rut_id`) REFERENCES `socio` (`rut`);
+
+ALTER TABLE `carta`
+	ADD CONSTRAINT `carta_carta_tipo` FOREIGN KEY (`tipo_id`) REFERENCES `carta_tipo` (`cod_carta_tipo`);
+
+ALTER TABLE `sindicato_carta`
+	ADD CONSTRAINT `sindicato_carta_sindicato` FOREIGN KEY(`sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`),
+	ADD CONSTRAINT `sindicato_carta_carta` FOREIGN KEY (`carta_id`) REFERENCES `carta` (`cod_carta`);
+
+ALTER TABLE `registro_presupuesto`
+	ADD CONSTRAINT `registro_presupuesto_presupuesto_mensual` FOREIGN KEY (`presupuesto_mensual_id`) REFERENCES `presupuesto_mensual` (`cod_presupuesto_mensual`),
+	ADD CONSTRAINT `registro_presupuesto_sindicato` FOREIGN KEY (`sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`);
+
+ALTER TABLE `presupuesto_mensual`
+	ADD CONSTRAINT `presupuesto_mensual_ingreso` FOREIGN KEY (`ingresos_id`) REFERENCES `ingreso` (`cod_ingreso`);
+
+ALTER TABLE `presupuesto_mensual_egreso`
+	ADD CONSTRAINT `presupuesto_mensual_egreso_presupuesto_mensual` FOREIGN KEY (`presupuesto_mensual_id`) REFERENCES `presupuesto_mensual` (`cod_presupuesto_mensual`),
+	ADD CONSTRAINT `presupuesto_mensual_egreso_egreso` FOREIGN KEY (`egreso_id`) REFERENCES `egreso` (`cod_egreso`);
+
+ALTER TABLE `informe`
+	ADD CONSTRAINT `informe_presupuesto_mensual` FOREIGN KEY (`presupuesto_mensual_id`) REFERENCES `presupuesto_mensual` (`cod_presupuesto_mensual`);
+
+
 -- Datos basicos a ingresar:
+
+INSERT INTO `sindicato` (`direccion`) VALUES
+('Camino Antiguo Coquimbo 16.064');
 
 INSERT INTO `motivo` (`tipo`) VALUES
 ('Mal comportamiento'),
@@ -167,7 +280,7 @@ INSERT INTO `rol` (nombre) VALUES
 ('Tesorero'),
 ('Secretario');
 
-INSERT INTO `usuario` (username, password, nombre, apellido, rol_id) VALUES
-('fransafu', 'password', 'Francisco', 'Sánchez', 3),
-('dsilva', 'password', 'Daniel', 'Silva', 2),
-('scott', 'password', 'Scott', 'Sánchez', 1);
+INSERT INTO `usuario` (username, password, nombre, apellido, rol_id, sindicato_id) VALUES
+('fransafu', 'password', 'Francisco', 'Sánchez', 3, 1),
+('dsilva', 'password', 'Daniel', 'Silva', 2, 1),
+('scott', 'password', 'Scott', 'Sánchez', 1, 1);
