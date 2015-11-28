@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,9 +37,9 @@ public class JFrameLogin extends javax.swing.JFrame {
         Panel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
+        jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -50,12 +51,6 @@ public class JFrameLogin extends javax.swing.JFrame {
         jLabel1.setText("Usuario");
 
         jLabel2.setText("Password");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jButton2.setText("Ingresar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -77,8 +72,8 @@ public class JFrameLogin extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(32, 32, 32)
                         .addGroup(Panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(jTextField2)))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(jPasswordField1)))
                     .addGroup(Panel1Layout.createSequentialGroup()
                         .addGap(172, 172, 172)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -94,7 +89,7 @@ public class JFrameLogin extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(Panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addGap(22, 22, 22))
@@ -130,10 +125,6 @@ public class JFrameLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -143,7 +134,8 @@ public class JFrameLogin extends javax.swing.JFrame {
             // Ingreso del usuario
             // Definiendo variables
             String username = jTextField2.getText();
-            String password = jTextField1.getText();
+            char[] pass = jPasswordField1.getPassword(); //captura pass en forma de array
+            String password = new String(pass); //Convierte a string el array 
             // Realizando conexion con base de datos
             Statement instruccion = Database.conexion();
             String sql;
@@ -161,6 +153,9 @@ public class JFrameLogin extends javax.swing.JFrame {
                 JFrameMain jFrame = new JFrameMain();
                 jFrame.setVisible(true);
                 this.setVisible(false);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña equivocada");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
@@ -208,7 +203,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
