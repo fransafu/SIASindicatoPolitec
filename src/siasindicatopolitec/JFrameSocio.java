@@ -298,6 +298,7 @@ public class JFrameSocio extends javax.swing.JFrame {
             Statement instruccion = Database.conexion();
             String buscarRut;
             buscarRut = jTextField1.getText();
+            validarRut(buscarRut);
             String sql = "SELECT rut, nombre, apellido, fenaci, (SELECT tipo FROM estado_civil WHERE cod_estado_civil = cod_estado_civil_id) , (SELECT tipo FROM sexo WHERE cod_sexo = sexo_id), antiguedad, (SELECT tipo FROM estado WHERE cod_estado = estado_id) FROM socio WHERE rut = "+buscarRut;
             ResultSet lista = instruccion.executeQuery(sql);
             
@@ -317,6 +318,33 @@ public class JFrameSocio extends javax.swing.JFrame {
         }
         
     }
+    public static boolean validarRut(String rut) {
+ 
+        boolean validacion = false;
+        try {
+        rut =  rut.toUpperCase();
+        rut = rut.replace(".", "");
+        rut = rut.replace("-", "");
+        int rutAux = Integer.parseInt(rut.substring(0, rut.length() - 1));
+
+        char dv = rut.charAt(rut.length() - 1);
+
+        int m = 0, s = 1;
+        for (; rutAux != 0; rutAux /= 10) {
+        s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
+        }
+        if (dv == (char) (s != 0 ? s + 47 : 75)) {
+        validacion = true;
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Rut Invalido");
+        }
+ 
+        } catch (java.lang.NumberFormatException e) {
+        } catch (Exception e) {
+        }
+        return validacion;
+        }
 
     /**
      * @param args the command line arguments

@@ -181,6 +181,7 @@ public class JFramePrestamo extends javax.swing.JFrame {
             Statement instruccion = Database.conexion();
 
             String rut = jTextField1.getText();
+            JFrameSocio.validarRut(rut);
             String monto = (String) jComboBox1.getSelectedItem();
             String nro_cuotas = (String) jComboBox2.getSelectedItem();
             //String motivo = (String) jComboBox1.getSelectedItem();

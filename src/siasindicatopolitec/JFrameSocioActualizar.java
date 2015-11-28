@@ -237,6 +237,7 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         try {
             Statement instruccion = Database.conexion();
             String rut = jTextField1.getText();
+            JFrameSocio.validarRut(rut);
             String nombreGet = jTextField2.getText();
             String apellido = jTextField3.getText();
             String fenaci = jTextField4.getText();

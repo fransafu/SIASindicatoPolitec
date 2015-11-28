@@ -192,6 +192,7 @@ public class JFrameMulta extends javax.swing.JFrame {
             Statement instruccion = Database.conexion();
 
             String rut = jTextField1.getText();
+            JFrameSocio.validarRut(rut);
             String numero_multa = jTextField2.getText();
             String motivo = (String) jComboBox1.getSelectedItem();
             String fecha = FechaActual();             
