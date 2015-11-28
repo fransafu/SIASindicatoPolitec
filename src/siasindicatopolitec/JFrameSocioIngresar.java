@@ -82,6 +82,23 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         jLabel8.setText("Antiguedad :");
 
         jTextField1.setToolTipText("");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
 
         jButton1.setText("IngresarSocio");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +120,10 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Casado", "Soltero", "Viudo", "Separado" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Femenino" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,6 +229,21 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Rut");
+        }
+        else if (jTextField2.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Nombre");
+        }
+        else if (jTextField3.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Apellido");
+        }
+        else if (jTextField4.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Fecha de Nacimiento");
+        }
+        else if (jTextField5.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Ingrese Antiguedad");
+        }
         try {
             Statement instruccion = Database.conexion();
 
@@ -242,6 +278,33 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+        //Ingreso solo numeros
+         char c = evt.getKeyChar();
+        if (Character.isLetter(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+        //Solo Letras
+         char c = evt.getKeyChar();
+        if (Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        // TODO add your handling code here:
+        //Solo Letras
+         char c = evt.getKeyChar();
+        if (Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
 
     // Funcion para estado civil
     /*

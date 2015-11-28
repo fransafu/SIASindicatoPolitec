@@ -50,6 +50,11 @@ public class JFrameGastosIngresar extends javax.swing.JFrame {
                 jTextField2ActionPerformed(evt);
             }
         });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
 
         jButton1.setText("Ingresar ");
 
@@ -133,6 +138,15 @@ public class JFrameGastosIngresar extends javax.swing.JFrame {
         JFrameGastos jFrame= new JFrameGastos();
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+        //solo numeros
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField2KeyTyped
 
     /**
      * @param args the command line arguments

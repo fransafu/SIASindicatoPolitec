@@ -79,6 +79,24 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
 
         jLabel8.setText("Antiguedad : ");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
+
         jButton1.setText("Actualizar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,7 +216,23 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        if (jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Rut");
+        }
+        else if (jTextField2.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Nombre");
+        }
+        else if (jTextField3.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Apellido");
+        }
+        else if (jTextField4.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Fecha de Nacimiento");
+        }
+        else if (jTextField5.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Ingrese Antiguedad");
+        }
+        
+        else{
         //boton Actualizar
         try {
             Statement instruccion = Database.conexion();
@@ -218,7 +252,35 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+        //Ingreso solo numeros
+         char c = evt.getKeyChar();
+        if (Character.isLetter(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+        //Ingreso solo letras
+         char c = evt.getKeyChar();
+        if (Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        // TODO add your handling code here:
+        //Ingreso solo letras
+         char c = evt.getKeyChar();
+        if (Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
     
     private void comboBoxEstadoCivil() throws SQLException{
         Statement instruccion = Database.conexion();

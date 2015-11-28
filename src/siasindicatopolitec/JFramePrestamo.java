@@ -63,6 +63,11 @@ public class JFramePrestamo extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
 
         jButton1.setText("Solicitar ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +173,10 @@ public class JFramePrestamo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese Rut Socio");
+        }
+        else {
         try {
             Statement instruccion = Database.conexion();
 
@@ -199,7 +208,17 @@ public class JFramePrestamo extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+        //Solo numeros
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField1KeyTyped
 
     public static String FechaActual(){
         Date fecha = new Date();

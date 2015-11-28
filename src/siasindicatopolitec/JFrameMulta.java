@@ -65,9 +65,20 @@ public class JFrameMulta extends javax.swing.JFrame {
 
         jLabel4.setText("Motivo :");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
+            }
+        });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
             }
         });
 
@@ -169,6 +180,13 @@ public class JFrameMulta extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if (jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese Rut Socio");
+        }
+        else if (jTextField2.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese numero de multa");
+        }
+        else{        
         //Registrar
         try {
             Statement instruccion = Database.conexion();
@@ -195,7 +213,27 @@ public class JFrameMulta extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+        //solo num
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+        //solo num
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)){
+            evt.consume();
+        }
+        
+    }//GEN-LAST:event_jTextField2KeyTyped
     
     private void comboBoxMotivo() throws SQLException{
         Statement instruccion = Database.conexion();
