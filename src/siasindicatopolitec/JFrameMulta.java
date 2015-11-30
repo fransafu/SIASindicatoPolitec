@@ -189,25 +189,43 @@ public class JFrameMulta extends javax.swing.JFrame {
         else{        
         //Registrar
         try {
+            // conexion con bd
             Statement instruccion = Database.conexion();
 
+            // Obtiene datos
             String rut = jTextField1.getText();
-            JFrameSocio.validarRut(rut);
             String numero_multa = jTextField2.getText();
             String motivo = (String) jComboBox1.getSelectedItem();
             String fecha = FechaActual();             
+            int cod_multa = 0; // Variable guarda ultimo cod_multa
+            String sql;            
 
-            String sql;
-            sql = "INSERT INTO multa (`rut_id`, `motivo_id`,`fecha`, `cant_multa`) VALUES ("
-                + rut +
-               ", (SELECT `cod_motivo` FROM `motivo` WHERE tipo ='"
-                + motivo +
-                "'), '"
-                + fecha +
-                "','"
-                + numero_multa +"');";
-                
+            // Obtener ultimo cod_prestado en la base de dato
+            ResultSet respuesta = instruccion.executeQuery("SELECT MAX(`cod_multa`) FROM `multa`");
+            while (respuesta.next()) {
+                if (respuesta.getString(1) != null){
+                    cod_multa = Integer.parseInt(respuesta.getString(1));
+                }
+                else{
+                    cod_multa = 0;
+                }
+            }
+            cod_multa +=1; // aumenta cod_multa en 1 para agregar el siguiente
+
+            // insert multa
+            sql = "INSERT INTO multa (`cod_multa`, `motivo_id`, `cant_multa`) VALUES ("
+                + cod_multa + ","
+                + "(SELECT cod_motivo FROM motivo WHERE tipo = '" + motivo + "'), "
+                + numero_multa +")";
             instruccion.executeUpdate(sql);
+
+            // insert socio multa
+            sql = "INSERT INTO `socio_multa`(`rut_id`, `multa_id`, `fecha`) VALUES ('"
+                + rut + "',"
+                + cod_multa + ",'"
+                + fecha +"')";    
+            instruccion.executeUpdate(sql);
+            
             JOptionPane.showMessageDialog(null, "Multa Registrada ");
             
 

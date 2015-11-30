@@ -179,15 +179,15 @@ CREATE TABLE IF NOT EXISTS `socio_multa`(
 	PRIMARY KEY (`cod_socio_multa`),
 	KEY `rut_id` (`rut_id`),
 	KEY `multa_id` (`multa_id`)
-) AUTO_INCREMENT = 1; 
+) AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `multa`(
-	`cod_multa` INT(11) NOT NULL AUTO_INCREMENT,
+	`cod_multa` INT(11) NOT NULL,
 	`motivo_id` INT(11) NOT NULL,
 	`cant_multa` INT(11) NOT NULL,
 	PRIMARY KEY (`cod_multa`),
 	KEY `motivo_id` (`motivo_id`)
-) AUTO_INCREMENT = 1;
+);
 
 CREATE TABLE IF NOT EXISTS `motivo`(
 	`cod_motivo` INT(11) NOT NULL AUTO_INCREMENT,

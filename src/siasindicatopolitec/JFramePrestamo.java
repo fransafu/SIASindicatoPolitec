@@ -5,6 +5,7 @@
  */
 package siasindicatopolitec;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -173,42 +174,49 @@ public class JFramePrestamo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (jTextField1.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Ingrese Rut Socio");
-        }
-        else {
         try {
+            //genera conexion
             Statement instruccion = Database.conexion();
 
+            //obtener datos
             String rut = jTextField1.getText();
-            JFrameSocio.validarRut(rut);
             String monto = (String) jComboBox1.getSelectedItem();
             String nro_cuotas = (String) jComboBox2.getSelectedItem();
-            //String motivo = (String) jComboBox1.getSelectedItem();
             String fecha = FechaActual();             
-
+            int contador = 0; // Variable guarda ultimo cod_prestamo + 1
             String sql;
-            sql = "INSERT INTO prestamo (`cantidad`, `nro_cuotas`) VALUES ("
-                + monto +
-               ",'"
-                + nro_cuotas +
-                "');";
-            
-            sql = "INSERT INTO solicitud (`fecha`,`rut_id`,`cod_prestamo_id`) VALUES ("
-                    +fecha+
-                    ",'"
-                    +rut+ 
-                    ",(SELECT `a.cod_prestamo` FROM `prestamo`a INNER JOIN `solicitud` b ON a.cod_prestamo = b.cod_prestamo_id ')";
-                    
-            
-            //instruccion.executeUpdate(sql1);   
-            instruccion.executeUpdate(sql);           
-            JOptionPane.showMessageDialog(null, "Prestamo Solicitado ");
-            
 
-        } catch (SQLException ex) {
+            // Obtener ultimo cod_prestado en la base de dato
+            ResultSet respuesta = instruccion.executeQuery("SELECT MAX(`cod_prestamo`) FROM `prestamo`");
+            while (respuesta.next()) {
+                if (respuesta.getString(1) != null){
+                    contador = Integer.parseInt(respuesta.getString(1));
+                }
+                else{
+                    contador = 0;
+                }
+            }
+            
+            contador +=1;// aumenta cod_prestamo en 1 para agregar el siguiente
+            
+            // Insert tabla prestamo
+            sql = "INSERT INTO `prestamo`(`cod_prestamo`, `cantidad`, `nro_cuotas`) VALUES ("
+                + contador + ","
+                + monto + ","
+                + nro_cuotas + ")";
+            instruccion.executeUpdate(sql);
+
+            // Insert tabla solicitud
+            sql = "INSERT INTO `solicitud`(`fecha`, `rut_id`, `prestamo_id`) VALUES ('"
+                    + fecha + "',"
+                    + rut +","
+                    + contador +")";                     
+            instruccion.executeUpdate(sql);
+            
+            JOptionPane.showMessageDialog(null, "Prestamo Solicitado!");
+        } 
+        catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

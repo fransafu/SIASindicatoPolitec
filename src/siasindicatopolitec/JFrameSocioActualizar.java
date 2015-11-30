@@ -249,7 +249,7 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
             String sql;
             sql = "UPDATE `socio` SET `rut`=" + rut + ",`nombre`='" + nombreGet + "',`apellido`='" + apellido + "',`fenaci`='" + fenaci + "',`cod_estado_civil_id`= (SELECT cod_estado_civil FROM estado_civil where tipo ='" + estado_civil + "'),`sexo_id`= (SELECT cod_sexo FROM sexo WHERE tipo ='" + sexo + "'),`antiguedad`='" + antiguedad + "',`estado_id`=(SELECT cod_estado FROM estado WHERE tipo ='" + estado + "') WHERE rut =" + rut; 
             instruccion.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "Datos Actualizado ");
+            JOptionPane.showMessageDialog(null, "Datos Actualizados ");
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
