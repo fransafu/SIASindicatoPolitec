@@ -244,11 +244,12 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         else if (jTextField5.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese Ingrese Antiguedad");
         }
+        else{
         try {
             Statement instruccion = Database.conexion();
 
             String rut = jTextField1.getText();
-            JFrameSocio.validarRut(rut);
+            //JFrameSocio.validarRut(rut);
             String nombreGet = jTextField2.getText();
             String apellido = jTextField3.getText();
             String fenaci = jTextField4.getText();
@@ -277,6 +278,7 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
 
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

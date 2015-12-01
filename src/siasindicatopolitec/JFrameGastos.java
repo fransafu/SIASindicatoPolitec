@@ -159,7 +159,7 @@ public class JFrameGastos extends javax.swing.JFrame {
         // TODO add your handling code here:
         //Ingresar
         this.setVisible(false);
-        JFrameGastosIngresar jFrame= new JFrameGastosIngresar();
+        JFrameIngresarGasto jFrame= new JFrameIngresarGasto();
         jFrame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
