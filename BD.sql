@@ -72,11 +72,9 @@ CREATE TABLE IF NOT EXISTS `registro_presupuesto` (
 
 CREATE TABLE IF NOT EXISTS `presupuesto_mensual` (
 	`cod_presupuesto_mensual` INT(11) NOT NULL AUTO_INCREMENT,
-	`total_gastos` FLOAT NOT NULL,
-	`total_ingresos` FLOAT NOT NULL,
-	`ingresos_id` INT(11) NOT NULL,
+	`ingreso_id` INT(11) NOT NULL,
 	PRIMARY KEY (`cod_presupuesto_mensual`),
-	KEY `ingresos_id` (`ingresos_id`)
+	KEY `ingreso_id` (`ingreso_id`)
 )AUTO_INCREMENT = 1;
 
 CREATE TABLE IF NOT EXISTS `presupuesto_mensual_egreso` (
@@ -238,7 +236,7 @@ ALTER TABLE `registro_presupuesto`
 	ADD CONSTRAINT `registro_presupuesto_sindicato` FOREIGN KEY (`sindicato_id`) REFERENCES `sindicato` (`cod_sindicato`);
 
 ALTER TABLE `presupuesto_mensual`
-	ADD CONSTRAINT `presupuesto_mensual_ingreso` FOREIGN KEY (`ingresos_id`) REFERENCES `ingreso` (`cod_ingreso`);
+	ADD CONSTRAINT `presupuesto_mensual_ingreso` FOREIGN KEY (`ingreso_id`) REFERENCES `ingreso` (`cod_ingreso`);
 
 ALTER TABLE `presupuesto_mensual_egreso`
 	ADD CONSTRAINT `presupuesto_mensual_egreso_presupuesto_mensual` FOREIGN KEY (`presupuesto_mensual_id`) REFERENCES `presupuesto_mensual` (`cod_presupuesto_mensual`),

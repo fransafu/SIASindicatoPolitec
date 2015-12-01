@@ -173,13 +173,12 @@ public class JFrameIngresos extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Statement instruccion = Database.conexion();
-
             String cuota_sind = jTextField1.getText();
             String cuota_75 = jTextField2.getText();
             String fecha = jTextField3.getText();
             int cod_ingreso= 0; // Variable guarda ultimo cod_ingreso
             int cod_presu=0; // variable guarda ultimo cod_presupuesto_mensual
-            String sql;            
+            String sql;
 
             // Obtener ultimo cod_prestado en la base de dato
             ResultSet respuesta = instruccion.executeQuery("SELECT MAX(`cod_ingreso`) FROM `ingreso`");
@@ -203,20 +202,22 @@ public class JFrameIngresos extends javax.swing.JFrame {
                 }
             }
             cod_presu +=1; // aumenta cod_presu en 1 para agregar el siguiente
-  
-            sql = "INSERT INTO ingreso (`cuota_sindical`, `cuota_75_percent`) VALUES ("
+
+            sql = "INSERT INTO ingreso (`saldo_anterior`, `cuota_sindical`, `cuota_75_percent`) VALUES (0,"
                 + cuota_sind +
-                ",'"
+                ","
                 + cuota_75 +
-                "');";
-            
+                ")";
+            instruccion.executeUpdate(sql);
+
             sql = "INSERT INTO presupuesto_mensual (`ingreso_id`) VALUES ("+ cod_ingreso +")";
-            
-            sql = "INSERT INTO registro_presupuesto (`fecha`,`sindicato_id`,`presupuesto_mensual_id`) VALUES ("
+            instruccion.executeUpdate(sql);
+
+            sql = "INSERT INTO registro_presupuesto (`fecha`,`sindicato_id`,`presupuesto_mensual_id`) VALUES ('"
                   + fecha +
-                  ",(SELECT `cod_sindicato` FROM `sindicato` WHERE cod_sindicato=1),"
+                  "',(SELECT `cod_sindicato` FROM `sindicato` WHERE cod_sindicato=1),"
                   + cod_presu +
-                  ");";
+                  ")";
             instruccion.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "Ingresos Ingresados Correctamente");
 
