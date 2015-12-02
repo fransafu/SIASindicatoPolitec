@@ -176,12 +176,17 @@ public class JFrameSocio extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton6))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -241,6 +246,10 @@ public class JFrameSocio extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt){
         //Boton Actualizar
         JFrameSocioActualizar jFrame = null;
+        if(jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese rut de socio");
+        }
+        else{
         try {
             jFrame = new JFrameSocioActualizar();
         } catch (SQLException ex) {
@@ -269,11 +278,16 @@ public class JFrameSocio extends javax.swing.JFrame {
             }            
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
+        }
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt){
         //boton borrar
+        if (jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese Rut socio");
+        }
+        else{
         try {
             Statement instruccion = Database.conexion();
             String buscarRut;
@@ -285,6 +299,7 @@ public class JFrameSocio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Socio Borrado ");
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }
 

@@ -5,6 +5,7 @@
  */
 package siasindicatopolitec;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -57,7 +58,7 @@ public class JFrameIngresarGasto extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         jLabel4.setText("Ingresar gasto");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2015", "2014", "2013", "2012", "2011" }));
 
@@ -181,13 +182,33 @@ public class JFrameIngresarGasto extends javax.swing.JFrame {
 
             String detalle = jTextField1.getText();
             String valor = jTextField2.getText();
-            //String estado_civil = (String) jComboBox1.getSelectedItem();
-            //String sexo = (String) jComboBox2.getSelectedItem();
+            String mes = (String) jComboBox1.getSelectedItem();
+            String ano = (String) jComboBox2.getSelectedItem();
+            String fecha = ano+"-"+mes+"-01";
+            int cod_egr=0;
+            
+            // Obtener ultimo cod_egreso en la base de dato
+            ResultSet respuesta = instruccion.executeQuery("SELECT MAX(`cod_egreso`) FROM `egreso`");
+            while (respuesta.next()) {
+                if (respuesta.getString(1) != null){
+                    cod_egr = Integer.parseInt(respuesta.getString(1));
+                }
+                else{
+                    cod_egr = 0;
+                }
+            }
+            cod_egr +=1; // aumenta cod_multa en 1 para agregar el siguiente
           
             String sql;
             sql = sql = "INSERT INTO `egreso`(`descripcion`, `monto`) VALUES ('"
                 + detalle + "',"
-                + valor +");";  
+                + valor +");"; 
+            
+            sql = "INSERT INTO `presupuesto_mensual_egreso` (`fecha`,`presupuesto_mensual_id`,`egreso_id`) VALUES ('"
+                + fecha + "',"
+                + "(SELECT `presupuesto_mensual_id` FROM `registro_presupuesto` WHERE YEAR(`fecha`) = '" + ano + 
+                "' AND MONTH(`fecha`)='" + mes + "'),"
+                + cod_egr +")";
             instruccion.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "Gasto Ingresado Correctamente");
 
