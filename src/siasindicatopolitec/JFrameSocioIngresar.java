@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,13 +55,13 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
         jComboBox2 = new javax.swing.JComboBox();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,13 +154,13 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                                     .addComponent(jLabel8))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField4)
-                                    .addComponent(jTextField5)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox2, 0, 147, Short.MAX_VALUE)))))
+                                    .addComponent(jComboBox2, 0, 147, Short.MAX_VALUE)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(160, 160, 160)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -184,10 +185,10 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -200,9 +201,9 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -218,8 +219,11 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
-        jTextField4.setText("");
-        jTextField5.setText("");
+        //jTextField4.setText("");
+        //jTextField5.setText("");
+        jDateChooser1.setCalendar(null);
+        jDateChooser2.setCalendar(null);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -238,12 +242,12 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
         else if (jTextField3.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese Apellido");
         }
-        else if (jTextField4.getText().isEmpty()){
+        /*else if (jTextField4.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese Fecha de Nacimiento");
         }
-        else if (jTextField5.getText().isEmpty()){
+        else if (jDateChooser2.getCalendar().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese Ingrese Antiguedad");
-        }
+        }*/
         else{
         try {
             Statement instruccion = Database.conexion();
@@ -252,10 +256,18 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
             //JFrameSocio.validarRut(rut);
             String nombreGet = jTextField2.getText();
             String apellido = jTextField3.getText();
-            String fenaci = jTextField4.getText();
+            //String fenaci = jTextField4.getText();
+            int ano = jDateChooser1.getCalendar().get(Calendar.YEAR);
+            int mes= jDateChooser1.getCalendar().get(Calendar.MONTH);
+            int dia = jDateChooser1.getCalendar().get(Calendar.DAY_OF_MONTH);
+            String fenaci = ano+"-"+mes+"-"+dia;
             String estado_civil = (String) jComboBox1.getSelectedItem();
             String sexo = (String) jComboBox2.getSelectedItem();
-            String antiguedad =  jTextField5.getText();
+            //String antiguedad =  jTextField5.getText();
+            int ano1 = jDateChooser2.getCalendar().get(Calendar.YEAR);
+            int mes1= jDateChooser2.getCalendar().get(Calendar.MONTH);
+            int dia1 = jDateChooser2.getCalendar().get(Calendar.DAY_OF_MONTH);
+            String antiguedad = ano1+"-"+mes1+"-"+dia1;
 
             String sql;
             sql = "INSERT INTO socio (`rut`, `nombre`, `apellido`, `fenaci`, `cod_estado_civil_id`, `sexo_id`, `antiguedad`, `estado_id`) VALUES ("
@@ -398,6 +410,8 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -409,8 +423,6 @@ public class JFrameSocioIngresar extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 
     private Date getDate(String jTextField2) {

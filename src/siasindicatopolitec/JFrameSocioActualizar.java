@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -243,7 +244,7 @@ public class JFrameSocioActualizar extends javax.swing.JFrame {
             String fenaci = jTextField4.getText();
             String estado_civil = (String) jComboBox1.getSelectedItem();
             String sexo = (String) jComboBox2.getSelectedItem();
-            String antiguedad =  jTextField5.getText();
+            String antiguedad = jTextField5.getText();
             String estado = (String) jComboBox3.getSelectedItem();
 
             String sql;
