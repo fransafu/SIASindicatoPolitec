@@ -130,6 +130,10 @@ public class JFrameLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (jTextField2.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese Username");
+        }
+        else {
         try {
             // Ingreso del usuario
             // Definiendo variables
@@ -159,6 +163,7 @@ public class JFrameLogin extends javax.swing.JFrame {
             }
         } catch (SQLException ex) {
             Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

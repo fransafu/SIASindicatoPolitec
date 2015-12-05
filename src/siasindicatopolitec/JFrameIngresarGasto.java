@@ -192,8 +192,8 @@ public class JFrameIngresarGasto extends javax.swing.JFrame {
             
             sql = "INSERT INTO `presupuesto_mensual_egreso` (`fecha`,`presupuesto_mensual_id`,`egreso_id`) VALUES ('"
                 + fecha + "',"
-                + "(SELECT `presupuesto_mensual_id` FROM `registro_presupuesto` WHERE YEAR(`fecha`) = '" + ano + 
-                "' AND MONTH(`fecha`)='" + mes + "'),"
+                + "(SELECT `presupuesto_mensual_id` FROM `registro_presupuesto` WHERE `fecha` = '" +fecha +
+                "'),"
                 + cod_egr +")";
             instruccion.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "Gasto Ingresado Correctamente");
@@ -209,6 +209,7 @@ public class JFrameIngresarGasto extends javax.swing.JFrame {
         //Limpiar
         jTextField1.setText("");
         jTextField2.setText("");
+        jDateChooser1.setCalendar(null);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

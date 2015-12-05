@@ -165,10 +165,18 @@ public class JFrameIngresos extends javax.swing.JFrame {
         jTextField1.setText("");
         jTextField2.setText("");
         //jTextField3.setText("");
+        jDateChooser1.setCalendar(null);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if (jTextField1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese Cuota Sindical");
+        }
+        else if (jTextField2.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese Cuota 75%");
+        }
+        else{
         try {
             Statement instruccion = Database.conexion();
             String cuota_sind = jTextField1.getText();
@@ -226,7 +234,7 @@ public class JFrameIngresos extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
