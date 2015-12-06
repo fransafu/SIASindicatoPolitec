@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS `sindicato_carta` (
 CREATE TABLE IF NOT EXISTS `carta` (
 	`cod_carta` INT(11) NOT NULL AUTO_INCREMENT,
 	`fecha` DATE NOT NULL,
+	`para` VARCHAR(100) NOT NULL,
+	`de` VARCHAR(100) NOT NULL,
 	`tipo_id` INT(11) NOT NULL,
 	PRIMARY KEY (`cod_carta`),
 	KEY `tipo_id` (`tipo_id`)

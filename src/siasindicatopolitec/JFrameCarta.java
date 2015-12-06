@@ -5,6 +5,16 @@
  */
 package siasindicatopolitec;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author francisco
@@ -14,8 +24,9 @@ public class JFrameCarta extends javax.swing.JFrame {
     /**
      * Creates new form JFrameCarta
      */
-    public JFrameCarta() {
+    public JFrameCarta() throws SQLException {
         initComponents();
+        comboBoxTipoCarta();
     }
 
     /**
@@ -75,12 +86,6 @@ public class JFrameCarta extends javax.swing.JFrame {
 
         jLabel6.setText("De: ");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,33 +93,31 @@ public class JFrameCarta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(41, 41, 41)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(31, 31, 31)
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(6, 6, 6)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addGap(55, 55, 55)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(55, 55, 55)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1)
+                            .addComponent(jTextField2)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addComponent(jLabel1)))
@@ -158,11 +161,39 @@ public class JFrameCarta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // Crear carta
+        Statement instruccion = Database.conexion();
+
+        // Datos de carta
+        String destinatario = jTextField2.getText();
+        String origen = jTextField1.getText();
+        String tipo = (String) jComboBox1.getSelectedItem();
+        int anho = jDateChooser1.getCalendar().get(Calendar.YEAR);
+        int mes= jDateChooser1.getCalendar().get(Calendar.MONTH);
+        int dia = jDateChooser1.getCalendar().get(Calendar.DAY_OF_MONTH);
+        String fecha = anho+"-"+mes+"-"+dia;
+        String sql;
+        
+        sql = "INSERT INTO `carta`(`fecha`, `para`, `de`, `tipo_id`) VALUES ('"
+                + fecha + 
+                "','"
+                + destinatario + 
+                "','"
+                + origen + 
+                "', (SELECT `cod_carta_tipo` FROM `carta_tipo` WHERE `tipo` = '"
+                + tipo +
+                "'))";
+
+        try {
+            instruccion.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Carta ingresada Correctamente");
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameCarta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         // Volver
         JFrameMain jFrame= new JFrameMain();
         jFrame.setVisible(true);
@@ -170,13 +201,31 @@ public class JFrameCarta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        // Limpiar
+        jTextField2.setText("");
+        jTextField1.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void comboBoxTipoCarta() throws SQLException{
+        Statement instruccion = Database.conexion();
+        String sql = "SELECT  `tipo` FROM `carta_tipo`";
+        ResultSet lista = instruccion.executeQuery(sql);
+        String varAux = "";
 
+        List<String> aux = new ArrayList<String>();
+
+        while(lista.next()){
+            varAux = lista.getString(1);
+            aux.add(varAux);
+        }
+
+        String[] data = new String[ aux.size() ];
+        aux.toArray( data );
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(data));
+    }
+
+    
     /**
      * @param args the command line arguments
      */
@@ -207,7 +256,11 @@ public class JFrameCarta extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameCarta().setVisible(true);
+                try {
+                    new JFrameCarta().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(JFrameCarta.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
