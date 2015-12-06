@@ -183,24 +183,22 @@ public class JFrameMulta extends javax.swing.JFrame {
         if (jTextField1.getText().isEmpty()){
             JOptionPane.showMessageDialog(null,"Ingrese Rut Socio");
         }
-        else if (jTextField2.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Ingrese numero de multa");
-        }
         else{        
         //Registrar
         try {
             // conexion con bd
             Statement instruccion = Database.conexion();
+            Statement instruccion2 = Database.conexion(); 
 
             // Obtiene datos
             String rut = jTextField1.getText();
-            String numero_multa = jTextField2.getText();
             String motivo = (String) jComboBox1.getSelectedItem();
             String fecha = FechaActual();             
             int cod_multa = 0; // Variable guarda ultimo cod_multa
+            int cantidad_multa = 0;
             String sql;            
 
-            // Obtener ultimo cod_prestado en la base de dato
+            // Obtener ultimo cod_multa en la base de dato
             ResultSet respuesta = instruccion.executeQuery("SELECT MAX(`cod_multa`) FROM `multa`");
             while (respuesta.next()) {
                 if (respuesta.getString(1) != null){
@@ -212,11 +210,25 @@ public class JFrameMulta extends javax.swing.JFrame {
             }
             cod_multa +=1; // aumenta cod_multa en 1 para agregar el siguiente
 
+            
+            // Obtener numero multa por socio
+            ResultSet respuesta2 = instruccion2.executeQuery("SELECT COUNT(`cod_socio_multa`) as 'cantidad_multa' FROM `socio_multa` WHERE YEAR(`fecha`) = '2015' AND MONTH(`fecha`) = '12' AND rut_id = 12345678");
+            while (respuesta2.next()) {
+                if (respuesta2.getString(1) != null){
+                    System.out.println(Integer.parseInt(respuesta2.getString(1)));
+                    cantidad_multa = Integer.parseInt(respuesta2.getString(1));
+                }
+                else{
+                    cantidad_multa = 0;
+                }
+            }
+            cantidad_multa += 1;
+
             // insert multa
             sql = "INSERT INTO multa (`cod_multa`, `motivo_id`, `cant_multa`) VALUES ("
                 + cod_multa + ","
                 + "(SELECT cod_motivo FROM motivo WHERE tipo = '" + motivo + "'), "
-                + numero_multa +")";
+                + cantidad_multa +")";
             instruccion.executeUpdate(sql);
 
             // insert socio multa
@@ -225,8 +237,6 @@ public class JFrameMulta extends javax.swing.JFrame {
                 + cod_multa + ",'"
                 + fecha +"')";    
             instruccion.executeUpdate(sql);
-            
-            JOptionPane.showMessageDialog(null, "Multa Registrada ");
             
 
         } catch (SQLException ex) {
